@@ -18,12 +18,14 @@ module.exports = {
   setup,
 };
 
+let store;
+
 // To be sure that start is called only once
 let started = false;
 
 // To be call from the main process
 function setup(webContents, electronStoreOptions = {}) {
-  const store = new Store(electronStoreOptions);
+  store = new Store(electronStoreOptions);
 
   // Will be called by the renderer process
   ipcMain.on(START_NOTIFICATION_SERVICE, async (_, senderId) => {
