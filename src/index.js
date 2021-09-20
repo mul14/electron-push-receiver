@@ -1,6 +1,5 @@
 const { register, listen } = require('push-receiver');
 const { ipcMain } = require('electron');
-const Store = require('electron-store');
 const {
   START_NOTIFICATION_SERVICE,
   NOTIFICATION_SERVICE_STARTED,
@@ -24,8 +23,10 @@ let store;
 let started = false;
 
 // To be call from the main process
-function setup(webContents, electronStoreOptions = {}) {
-  store = new Store(electronStoreOptions);
+function setup(webContents, electronStore) {
+  if (!store) {
+    store = electronStore;
+  }
 
   // Will be called by the renderer process
   ipcMain.on(START_NOTIFICATION_SERVICE, async (_, senderId) => {
