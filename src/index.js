@@ -9,8 +9,6 @@ const {
   TOKEN_UPDATED,
 } = require('./constants');
 
-const store = new Store();
-
 module.exports = {
   START_NOTIFICATION_SERVICE,
   NOTIFICATION_SERVICE_STARTED,
@@ -24,7 +22,9 @@ module.exports = {
 let started = false;
 
 // To be call from the main process
-function setup(webContents) {
+function setup(webContents, electronStoreOptions = {}) {
+  const store = new Store(electronStoreOptions);
+
   // Will be called by the renderer process
   ipcMain.on(START_NOTIFICATION_SERVICE, async (_, senderId) => {
     // Retrieve saved credentials
